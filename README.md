@@ -3,13 +3,39 @@
 
 `portcl` helps one create Erlang ports based on Tcl scripts.
 
+## Introduction
+
+An Erlang port is a non-Erlang external program (or linked driver) that
+appears to the Erlang processes as another process and can communicate
+with these processes via the message passing mechanisms.
+
+This project is about ports written in Tcl. Such a script will act as
+a subordinate process to the Erlang process/node (VM) that launched it,
+and so it can only last as long as the Erlang owner process is alive.
+
+For an independent/standalone Tcl script that can communicate
+with Erlang processes please see the companion project -
+[etclface](https://github.com/fredyouhanaie/etclface).
+
+## Packages and Modules
+
 This project contains two libraries with convenience functions, and a
 bunch of example applications.
 
-Both Tcl and Erlang are mature scripting languages that were conceived
-and created in the mid to late 80s, and are still being developed.
+As can be seen from the `otp-tutorial/` example, a Tcl based port can
+be written without the need for libraries, however, the purpose of
+these is to avoid repetitive cut-n-paste of code.
 
-A port (program/script) written in Tcl will act as a subordinate process
-to the Erlang process/node (VM) that launched it. A companion project,
-`etclface`, enable one to create an independed Tcl based process that
-will look like another Erlang process.
+The aim of the project is to expand the modules for various patterns,
+such as gui dashboards, rpc calls etc.
+
+## Feedback and contributions
+
+All feedback and contributions are welcome. Please use the issue tracker
+and pull requests for bugs and code contributions.
+
+
+Enjoy
+
+Fred Youhanaie
+
