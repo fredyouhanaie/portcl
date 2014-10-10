@@ -49,7 +49,7 @@ proc getdata_l {} {
 
 ::portcl::init 1
 
-chan event stdin readable getdata
+::portcl::stdin_event_handler getdata
 
 ::portcl::send_data 2 ok
 

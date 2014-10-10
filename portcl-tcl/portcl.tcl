@@ -128,7 +128,7 @@ proc ::portcl::set_mode {portmode} {
 			}
 	}
 	# treat line mode as normal, the rest are special
-	if {$::portcl::portmode == l} {
+	if {$::portcl::portmode == "l"} {
 		chan configure stdin  -translation auto -buffering line
 		chan configure stdout -translation auto -buffering line 
 	} else {
@@ -180,4 +180,20 @@ proc ::portcl::send_data {size data} {
 			}
 	}
 }
+
+
+#
+# ::portcl::stdin_event_handler
+#	configure event mode operation on stdin
+#	(as opposed to own busy-ish poll loop)
+#
+# Arguments:
+#	handler	script to handle the stdin readable event
+#
+# Results: none.
+#
+proc ::portcl::stdin_event_handler {handler} {
+	chan event stdin readable $handler
+}
+
 
