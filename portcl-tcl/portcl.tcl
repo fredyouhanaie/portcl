@@ -91,8 +91,6 @@ proc ::portcl::get_mode {default_mode} {
 proc ::portcl::init {{defaultmode 2}} {
 	if [catch {
 		::portcl::set_mode  [::portcl::get_mode $defaultmode]
-		chan configure stdin  -translation binary
-		chan configure stdout -translation binary -buffering none 
 		} result
 	] {
 		return -code error $result
@@ -128,6 +126,15 @@ proc ::portcl::set_mode {portmode} {
 		4 {	set ::portcl::header_size 4
 			set ::portcl::header_fmt  I
 			}
+	}
+	# treat line mode as normal, the rest are special
+	if {$::portcl::portmode == l} {
+		chan configure stdin  -translation auto -buffering line
+		chan configure stdout -translation auto -buffering line 
+	} else {
+		
+		chan configure stdin  -translation binary
+		chan configure stdout -translation binary -buffering none 
 	}
 	return
 }
