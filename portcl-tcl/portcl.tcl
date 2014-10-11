@@ -197,3 +197,28 @@ proc ::portcl::stdin_event_handler {handler} {
 }
 
 
+#
+# ::portcl::get_data
+#	read and return data, based on portmode
+#
+# Arguments: none
+#
+# Results:
+#	data if successful
+#	error exception if eof, or something goes wrong
+proc ::portcl::get_data {} {
+	if [regexp {[124]} $::portcl::portmode] {
+		set len [::portcl::get_header]
+		if {$len < 0} { return -code error eof }
+		set data [read stdin $len]
+		if [chan eof stdin] { return -code error eof }
+		return $data
+	} elseif {$::portcl::portmode == "l"} {
+		gets stdin data
+		if [chan eof stdin] { return -code error eof }
+		return $data
+	} else {
+		return -code error "bad portmode ($::portcl::portmode)"
+	}
+}
+
