@@ -3,13 +3,13 @@
 # buttons.tcl
 #	tcl/tk buttons that send predefined messages to the erlang port.
 #
-# We expect the erlang port to be in 'line' mode.
 
 package require Tk
 package require portcl
 
-# we only deal with line mode
-::portcl::set_mode l
+::portcl::init
+
+::portcl::stdin_event_handler ::portcl::get_data
 
 # create a bunch of Greek buttons on a single row in a frame
 ttk::frame .bframe
