@@ -10,8 +10,8 @@
 -export([start/0]).
 
 -define(TclCmd, {spawn_executable, "buttons.tcl"}).
--define(TclArgs, ["-s"]).
--define(PortMode, stream).
+-define(TclArgs, ["-2"]).
+-define(PortMode, {packet, 2}).
 
 start() ->
 	erlang:open_port(?TclCmd, [ ?PortMode, {args, ?TclArgs} ]),

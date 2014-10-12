@@ -18,7 +18,7 @@ ttk::frame .bframe
 set col 0
 foreach bname {Alpha Beta Gamma Delta} {
 	set button .bframe.[string tolower $bname]
-	ttk::button $button -text $bname -command "::portcl::send_data [string bytelength $bname] $bname"
+	ttk::button $button -text $bname -command "::portcl::send_data $bname"
 	grid $button -row 0 -column [incr col]
 }
 
