@@ -168,9 +168,10 @@ proc ::portcl::get_header {} {
 # Results:
 #	whatever puts may return!
 #
-proc ::portcl::send_data {size data} {
+proc ::portcl::send_data {data} {
 	switch -regexp  $::portcl::portmode {
 		{[124]} {
+			set size [string bytelength $data]
 			set msg [binary format ${::portcl::header_fmt}a$size $size $data]
 			puts -nonewline stdout $msg
 			}

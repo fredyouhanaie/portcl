@@ -25,14 +25,14 @@ proc getdata {} {
 			return
 		}
 	}
-	::portcl::send_data [string bytelength $data] $data
+	::portcl::send_data $data
 }
 
 ::portcl::init 1
 
 ::portcl::stdin_event_handler getdata
 
-::portcl::send_data 2 ok
+::portcl::send_data ok
 
 diag "ready to rock and roll (portmode=$::portcl::portmode)"
 
