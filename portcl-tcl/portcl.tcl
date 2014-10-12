@@ -131,8 +131,10 @@ proc ::portcl::set_mode {portmode} {
 	if {$::portcl::portmode == "l"} {
 		chan configure stdin  -translation auto -buffering line
 		chan configure stdout -translation auto -buffering line 
+	} elseif {$::portcl::portmode == "s"} {
+		chan configure stdin  -translation binary -blocking 0
+		chan configure stdout -translation binary -buffering none 
 	} else {
-		
 		chan configure stdin  -translation binary
 		chan configure stdout -translation binary -buffering none 
 	}
@@ -216,6 +218,10 @@ proc ::portcl::get_data {} {
 		return $data
 	} elseif {$::portcl::portmode == "l"} {
 		gets stdin data
+		if [chan eof stdin] { return -code error eof }
+		return $data
+	} elseif {$::portcl::portmode == "s"} {
+		set data [read stdin]
 		if [chan eof stdin] { return -code error eof }
 		return $data
 	} else {
