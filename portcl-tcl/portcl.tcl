@@ -164,7 +164,6 @@ proc ::portcl::get_header {} {
 #	send data to the erlang side
 #
 # Arguments:
-#	size	number of bytes in data
 #	data	the data to send
 #
 # Results:
