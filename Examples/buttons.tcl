@@ -4,12 +4,14 @@
 #	tcl/tk buttons that send predefined messages to the erlang port.
 #
 
-package require Tk
+# load and initialize portcl first, so that it can grab the first command
+# line options
 package require portcl
 
 ::portcl::init
-
 ::portcl::stdin_event_handler ::portcl::get_data
+
+package require Tk
 
 # create a bunch of Greek buttons on a single row in a frame
 ttk::frame .bframe

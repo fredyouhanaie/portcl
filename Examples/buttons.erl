@@ -10,10 +10,12 @@
 -export([start/0]).
 
 -define(TclCmd, {spawn_executable, "buttons.tcl"}).
+-define(TclArgs, ["-s"]).
+-define(PortMode, stream).
 
 start() ->
-	erlang:open_port(?TclCmd, [ {line, 100} ]),
-	erlang:open_port(?TclCmd, [ {line, 100} ]),
+	erlang:open_port(?TclCmd, [ ?PortMode, {args, ?TclArgs} ]),
+	erlang:open_port(?TclCmd, [ ?PortMode, {args, ?TclArgs} ]),
 	loop(2).
 
 loop(0) ->
@@ -22,7 +24,7 @@ loop(0) ->
 
 loop(N) ->
 	receive
-		{Port, {data, {eol, Msg}}} when is_port(Port) ->
+		{Port, {data, Msg}} when is_port(Port) ->
 			io:format("Port ~p: received ~p.~n", [Port, Msg]),
 			loop(N);
 		{'EXIT', Port, normal} when is_port(Port) ->
