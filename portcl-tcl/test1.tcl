@@ -20,6 +20,8 @@ proc getdata {} {
 		if {$data == "eof"} {
 			got_eof
 			return
+		} elseif {$data == "nodata"} {
+			return
 		} else {
 			set ::forever 1
 			return
