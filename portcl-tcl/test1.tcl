@@ -6,28 +6,28 @@
 package require portcl
 
 proc diag {msg} {
-	tclLog "$::argv0: $msg"
+    tclLog "$::argv0: $msg"
 }
 
 proc got_eof {} {
-	diag "got eof"
-	set ::forever 1
+    diag "got eof"
+    set ::forever 1
 }
 
 proc getdata {} {
-	diag "reading data"
-	if [ catch ::portcl::get_data data ] {
-		if {$data == "eof"} {
-			got_eof
-			return
-		} elseif {$data == "nodata"} {
-			return
-		} else {
-			set ::forever 1
-			return
-		}
-	}
-	::portcl::send_data $data
+    diag "reading data"
+    if [ catch ::portcl::get_data data ] {
+        if {$data == "eof"} {
+            got_eof
+            return
+        } elseif {$data == "nodata"} {
+            return
+        } else {
+            set ::forever 1
+            return
+        }
+    }
+    ::portcl::send_data $data
 }
 
 ::portcl::init 1

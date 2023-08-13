@@ -10,22 +10,22 @@
 package provide portcl 0.1.0
 
 namespace eval ::portcl {
-	# portmode is a single character defining the communication mode
-	#	1: {packet, 1}
-	#	2: {packet, 2}
-	#	4: {packet, 4}
-	#	l: {line, _} - line length not relevant to the tcl side
-	#	s: stream
-	variable ::portcl::portmode
+    # portmode is a single character defining the communication mode
+    #	1: {packet, 1}
+    #	2: {packet, 2}
+    #	4: {packet, 4}
+    #	l: {line, _} - line length not relevant to the tcl side
+    #	s: stream
+    variable ::portcl::portmode
 
-	# header_size and header_fmt are only used for packet mod
-	#
-	# header_size is one of 1,2 or 4
-	variable ::portcl::header_size
+    # header_size and header_fmt are only used for packet mod
+    #
+    # header_size is one of 1,2 or 4
+    variable ::portcl::header_size
 
-	# header_fmt is one of c, S or I, corresponding to header_size
-	# of 1, 2 or 4 respectively
-	variable ::portcl::header_fmt
+    # header_fmt is one of c, S or I, corresponding to header_size
+    # of 1, 2 or 4 respectively
+    variable ::portcl::header_fmt
 }
 
 
@@ -48,28 +48,28 @@ namespace eval ::portcl {
 #
 proc ::portcl::get_mode {default_mode} {
 
-	# handle the trivial case
-	if {$::argc == 0} { return $default_mode }
+    # handle the trivial case
+    if {$::argc == 0} { return $default_mode }
 
-	set opt [lindex $::argv 0]
+    set opt [lindex $::argv 0]
 
-	if {[regexp {^-[124sl]$} $opt]} {
-		set portmode "[string index $opt 1]"
-	}
+    if {[regexp {^-[124sl]$} $opt]} {
+        set portmode "[string index $opt 1]"
+    }
 
-	# shift the arg list, if we have port mode option
-	if [info exists portmode] {
-		set ::argv [lindex $::argv 1 end]
-		set opt [lindex $::argv 0]
-	} else {
-		set portmode $default_mode
-	}
+    # shift the arg list, if we have port mode option
+    if [info exists portmode] {
+        set ::argv [lindex $::argv 1 end]
+        set opt [lindex $::argv 0]
+    } else {
+        set portmode $default_mode
+    }
 
-	if {$opt == "--"} {
-		set ::argv [lindex $::argv 1 end]
-	}
+    if {$opt == "--"} {
+        set ::argv [lindex $::argv 1 end]
+    }
 
-	return $portmode
+    return $portmode
 }
 
 
@@ -89,14 +89,14 @@ proc ::portcl::get_mode {default_mode} {
 #	The init function returns 0 on success, and -1 on error.
 #
 proc ::portcl::init {{defaultmode 2}} {
-	if [catch {
-		::portcl::set_mode  [::portcl::get_mode $defaultmode]
-		} result
-	] {
-		return -code error $result
-	}
+    if [catch {
+        ::portcl::set_mode  [::portcl::get_mode $defaultmode]
+    } result
+       ] {
+        return -code error $result
+    }
 
-	return 0
+    return 0
 }
 
 
@@ -115,30 +115,30 @@ proc ::portcl::init {{defaultmode 2}} {
 # Results: none.
 #
 proc ::portcl::set_mode {portmode} {
-	set ::portcl::portmode $portmode
-	switch -- $portmode {
-		1 {	set ::portcl::header_size 1
-			set ::portcl::header_fmt  c
-			}
-		2 {	set ::portcl::header_size 2
-			set ::portcl::header_fmt  S
-			}
-		4 {	set ::portcl::header_size 4
-			set ::portcl::header_fmt  I
-			}
-	}
-	# treat line mode as normal, the rest are special
-	if {$::portcl::portmode == "l"} {
-		chan configure stdin  -translation auto -buffering line -blocking 0
-		chan configure stdout -translation auto -buffering line 
-	} elseif {$::portcl::portmode == "s"} {
-		chan configure stdin  -translation binary -blocking 0
-		chan configure stdout -translation binary -buffering none 
-	} else {
-		chan configure stdin  -translation binary
-		chan configure stdout -translation binary -buffering none 
-	}
-	return
+    set ::portcl::portmode $portmode
+    switch -- $portmode {
+        1 {	set ::portcl::header_size 1
+            set ::portcl::header_fmt  c
+        }
+        2 {	set ::portcl::header_size 2
+            set ::portcl::header_fmt  S
+        }
+        4 {	set ::portcl::header_size 4
+            set ::portcl::header_fmt  I
+        }
+    }
+    # treat line mode as normal, the rest are special
+    if {$::portcl::portmode == "l"} {
+        chan configure stdin  -translation auto -buffering line -blocking 0
+        chan configure stdout -translation auto -buffering line 
+    } elseif {$::portcl::portmode == "s"} {
+        chan configure stdin  -translation binary -blocking 0
+        chan configure stdout -translation binary -buffering none 
+    } else {
+        chan configure stdin  -translation binary
+        chan configure stdout -translation binary -buffering none 
+    }
+    return
 }
 
 
@@ -152,10 +152,10 @@ proc ::portcl::set_mode {portmode} {
 #	length of data in bytes to expect, or -1 if eof encountered
 #
 proc ::portcl::get_header {} {
-	set data [read stdin $::portcl::header_size]
-	if [chan eof stdin] {return -1}
-	binary scan $data $::portcl::header_fmt len
-	return $len
+    set data [read stdin $::portcl::header_size]
+    if [chan eof stdin] {return -1}
+    binary scan $data $::portcl::header_fmt len
+    return $len
 }
 
 
@@ -170,17 +170,17 @@ proc ::portcl::get_header {} {
 #	whatever puts may return!
 #
 proc ::portcl::send_data {data} {
-	switch -regexp  $::portcl::portmode {
-		{[124]} {
-			set size [string bytelength $data]
-			set msg [binary format ${::portcl::header_fmt}a$size $size $data]
-			puts -nonewline stdout $msg
-			}
-		l {	puts stdout $data
-			}
-		s {	puts -nonewline stdout $data
-			}
-	}
+    switch -regexp  $::portcl::portmode {
+        {[124]} {
+            set size [string bytelength $data]
+            set msg [binary format ${::portcl::header_fmt}a$size $size $data]
+            puts -nonewline stdout $msg
+        }
+        l {	puts stdout $data
+        }
+        s {	puts -nonewline stdout $data
+        }
+    }
 }
 
 
@@ -195,7 +195,7 @@ proc ::portcl::send_data {data} {
 # Results: none.
 #
 proc ::portcl::stdin_event_handler {handler} {
-	chan event stdin readable $handler
+    chan event stdin readable $handler
 }
 
 
@@ -209,23 +209,22 @@ proc ::portcl::stdin_event_handler {handler} {
 #	data if successful
 #	error exception if eof, or something goes wrong
 proc ::portcl::get_data {} {
-	if [regexp {[124]} $::portcl::portmode] {
-		set len [::portcl::get_header]
-		if {$len < 0} { return -code error eof }
-		set data [read stdin $len]
-		if [chan eof stdin] { return -code error eof }
-		return $data
-	} elseif {$::portcl::portmode == "l"} {
-		set numchars [gets stdin data]
-		if [chan eof stdin] { return -code error eof }
-		if {$numchars < 0} { return -code error nodata }
-		return $data
-	} elseif {$::portcl::portmode == "s"} {
-		set data [read stdin]
-		if [chan eof stdin] { return -code error eof }
-		return $data
-	} else {
-		return -code error "bad portmode ($::portcl::portmode)"
-	}
+    if [regexp {[124]} $::portcl::portmode] {
+        set len [::portcl::get_header]
+        if {$len < 0} { return -code error eof }
+        set data [read stdin $len]
+        if [chan eof stdin] { return -code error eof }
+        return $data
+    } elseif {$::portcl::portmode == "l"} {
+        set numchars [gets stdin data]
+        if [chan eof stdin] { return -code error eof }
+        if {$numchars < 0} { return -code error nodata }
+        return $data
+    } elseif {$::portcl::portmode == "s"} {
+        set data [read stdin]
+        if [chan eof stdin] { return -code error eof }
+        return $data
+    } else {
+        return -code error "bad portmode ($::portcl::portmode)"
+    }
 }
-

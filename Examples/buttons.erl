@@ -14,27 +14,26 @@
 -define(PortMode, {packet, 2}).
 
 start() ->
-	erlang:open_port(?TclCmd, [ ?PortMode, {args, ?TclArgs} ]),
-	erlang:open_port(?TclCmd, [ ?PortMode, {args, ?TclArgs} ]),
-	loop(2).
+    erlang:open_port(?TclCmd, [ ?PortMode, {args, ?TclArgs} ]),
+    erlang:open_port(?TclCmd, [ ?PortMode, {args, ?TclArgs} ]),
+    loop(2).
 
 loop(0) ->
-	io:format("no more ports, signing off!~n"),
-	ok;
+    io:format("no more ports, signing off!~n"),
+    ok;
 
 loop(N) ->
-	receive
-		{Port, {data, Msg}} when is_port(Port) ->
-			io:format("Port ~p: received ~p.~n", [Port, Msg]),
-			loop(N);
-		{'EXIT', Port, normal} when is_port(Port) ->
-			io:format("Port ~p: received EXIT.~n", [Port]),
-			loop(N-1);
-		ANY ->
-			io:format("unexpected message: ~p.~n", [ANY]),
-			loop(N)
-	after 5000 ->
-		io:format("TICK~n"),
-		loop(N)
-	end.
-
+    receive
+        {Port, {data, Msg}} when is_port(Port) ->
+            io:format("Port ~p: received ~p.~n", [Port, Msg]),
+            loop(N);
+        {'EXIT', Port, normal} when is_port(Port) ->
+            io:format("Port ~p: received EXIT.~n", [Port]),
+            loop(N-1);
+        ANY ->
+            io:format("unexpected message: ~p.~n", [ANY]),
+            loop(N)
+    after 5000 ->
+            io:format("TICK~n"),
+            loop(N)
+    end.

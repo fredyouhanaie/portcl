@@ -16,7 +16,7 @@
 
 
 do_open(PortMode, Args) ->
-	open_port(?TclCmd, [PortMode, ?TclEnv, {args, Args}]).
+    open_port(?TclCmd, [PortMode, ?TclEnv, {args, Args}]).
 
 open1() -> do_open({packet, 1}, ["-1"]).
 open2() -> do_open({packet, 2}, ["-2"]).
@@ -29,12 +29,12 @@ send(Port, Msg) -> port_command(Port, Msg).
 
 
 wait4data(P, Data, Timeout) ->
-	receive
-		{P, {data, Data}} ->
-			ok
-	after Timeout ->
-		timeout
-	end.
+    receive
+        {P, {data, Data}} ->
+            ok
+    after Timeout ->
+            timeout
+    end.
 
 
 
@@ -45,18 +45,17 @@ openl_test() -> test_line(openl()).
 opens_test() -> test_pack(opens()).
 
 test_pack(P) ->
-	?assert( is_port(P) ),
-	?assertEqual( wait4data(P, "ok", 3000), ok ),
-	send(P, "hello"),
-	?assertEqual( wait4data(P, "hello", 3000), ok ),
-	send(P, "goodbye"),
-	?assertEqual( wait4data(P, "goodbye", 3000), ok ),
-	erlang:port_close(P).
+    ?assert( is_port(P) ),
+    ?assertEqual( wait4data(P, "ok", 3000), ok ),
+    send(P, "hello"),
+    ?assertEqual( wait4data(P, "hello", 3000), ok ),
+    send(P, "goodbye"),
+    ?assertEqual( wait4data(P, "goodbye", 3000), ok ),
+    erlang:port_close(P).
 
 test_line(P) ->
-	?assert( is_port(P) ),
-	?assertEqual( wait4data(P, {eol, "ok"}, 3000), ok ),
-	send(P, ["hello", "\n"]),
-	?assertEqual( wait4data(P, {eol, "hello"}, 3000), ok ),
-	erlang:port_close(P).
-
+    ?assert( is_port(P) ),
+    ?assertEqual( wait4data(P, {eol, "ok"}, 3000), ok ),
+    send(P, ["hello", "\n"]),
+    ?assertEqual( wait4data(P, {eol, "hello"}, 3000), ok ),
+    erlang:port_close(P).
