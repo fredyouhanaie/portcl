@@ -3,6 +3,9 @@
 
 `portcl` helps one create Erlang ports based on Tcl scripts.
 
+__Note:__ The source code license has been changed to Apache 2.0. This
+is in order to be consistent with my other Erlang based projects.
+
 ## Introduction
 
 An Erlang port is a non-Erlang external program (or linked driver) that
