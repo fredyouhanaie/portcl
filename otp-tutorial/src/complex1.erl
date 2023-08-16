@@ -9,7 +9,7 @@
 -export([start/0]).
 
 start() ->
-    start(["./erlport.tcl"]).
+    start(["priv/erlport.tcl"]).
 
 start([ExtPrg]) ->
     spawn(?MODULE, init, [ExtPrg]).
