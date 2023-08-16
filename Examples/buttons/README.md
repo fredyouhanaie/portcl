@@ -19,7 +19,7 @@ its messages to the standard output, i.e.:
     $ _build/default/bin/buttons
     
 or
-    $ rebar3 shell
+    $ TCLLIBPATH=priv rebar3 shell
     1> buttons:start().
 
 ---
