@@ -15,7 +15,7 @@
 %%--------------------------------------------------------------------
 
 -define(TclCmd, {spawn_executable, "test/portcl_tests.tcl"}).
--define(TclEnv, {env, [ {"TCLLIBPATH", "."} ]}).
+-define(TclEnv, {env, [ {"TCLLIBPATH", "priv"} ]}).
 
 %%--------------------------------------------------------------------
 
