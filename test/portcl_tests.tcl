@@ -5,8 +5,12 @@
 
 package require portcl
 
+tclLog "tcl_interactive=$::tcl_interactive"
+
 proc diag {msg} {
-    tclLog "$::argv0: $msg"
+    if { $::tcl_interactive == 1 } {
+        tclLog "$::argv0: $msg"
+    }
 }
 
 proc got_eof {} {
