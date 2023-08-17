@@ -11,7 +11,7 @@ that you will get two identical windows, each with its own set of buttons.
 The Tcl script can also be run on its own, in which case it will send
 its messages to the standard output, i.e.:
 
-> env TCLLIBPATH=../portcl-tcl ./buttons.tcl 
+> TCLLIBPATH=priv/ ./buttons.tcl
 
 ## Build and Run
 
@@ -19,6 +19,7 @@ its messages to the standard output, i.e.:
     $ _build/default/bin/buttons
     
 or
+
     $ TCLLIBPATH=priv rebar3 shell
     1> buttons:start().
 
