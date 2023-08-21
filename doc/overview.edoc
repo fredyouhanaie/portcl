@@ -1,0 +1,22 @@
+%% -*- mode:html -*-
+
+@author Fred Youhanaie <fyrlang@anydata.co.uk>
+@copyright 2023 Fred Youhanaie
+@version 0.1.0
+
+@doc
+
+An Erlang port is a non-Erlang external program (or linked driver)
+that appears to the Erlang processes as another process and can
+communicate with these processes via the message passing mechanisms.
+
+This project is about ports written in Tcl. Such a script will act as
+a subordinate process to the Erlang process/node (VM) that launched
+it, and so it can only last as long as the Erlang owner process is
+alive.
+
+Currently. there are no erlang modules here, however, once those
+modules have been developed, their documentation will be included
+here.
+
+<hr/>

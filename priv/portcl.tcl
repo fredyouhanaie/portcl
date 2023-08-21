@@ -18,7 +18,7 @@ namespace eval ::portcl {
     #	s: stream
     variable ::portcl::portmode
 
-    # header_size and header_fmt are only used for packet mod
+    # header_size and header_fmt are only used for packet mode
     #
     # header_size is one of 1,2 or 4
     variable ::portcl::header_size
