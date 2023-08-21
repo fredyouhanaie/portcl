@@ -19,4 +19,10 @@ Currently. there are no erlang modules here, however, once those
 modules have been developed, their documentation will be included
 here.
 
+For now, please see the mini-projects in the `Examples/' directory for
+the Erlang side usage.
+
+For the Tcl side see the code examples in the `Examples/' directory,
+as well as the documentation in the `priv/portcl.tcl' package.
+
 <hr/>
